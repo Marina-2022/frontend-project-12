@@ -1,0 +1,16 @@
+{
+  "name": "@hexlet/code",
+  "version": "1.0.0",
+  "description": "chat Slack",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm run build --prefix frontend",
+    "start": "start-server -s ./frontend/build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Marina",
+  "license": "ISC",
+  "dependencies": {
+    "@hexlet/chat-server": "^2.0.3"
+  }
+}
