@@ -4,10 +4,12 @@ install:
 start-frontend:
 		make -C frontend start
 
-build:
-		rm -rf frontend/build
-		npm run build
-
 start-backend:
 		npm start
 
+start:
+	make start-backend & make start-frontend
+
+build:
+		rm -rf frontend/build
+		npm run build
