@@ -12,4 +12,4 @@ start:
 
 build:
 		rm -rf frontend/build
-		npm run build --prefix frontend
+		npm run build 
