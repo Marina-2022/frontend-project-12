@@ -1,16 +1,41 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import Header from './Header';
+import { setToken, setUserName } from '../slices/authSlice';
 
 const Login = () => {
+  const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+  const addToken = (token) => dispatch(setToken(token));
+  const addUserName = (userName) => dispatch(setUserName(userName));
+
   const formik = useFormik({
     initialValues: {
       username: '',
       password: '',
     },
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      try {
+        console.log(values);
+        const { data } = await axios.post('/api/v1/login', values);
+        if (data.token) {
+          // localStorage.setItem('token', data.token);
+          // localStorage.setItem('username', data.username);
+          addToken(data.token);
+          addUserName(data.username);
+          navigate('/');
+        } else {
+          console.error('Error');
+        }
+        // console.log('data', data);
+      } catch (error) {
+        console.error('Error:', error);
+      }
     },
   });
 
@@ -29,7 +54,10 @@ const Login = () => {
                     alt="Войти"
                   />
                 </div>
-                <Form className="col-12 col-md-6 mt-3 mt-mb-0">
+                <Form
+                  className="col-12 col-md-6 mt-3 mt-mb-0"
+                  onSubmit={formik.handleSubmit}
+                >
                   <h1 className="text-center mb-4">
                     Войти
                   </h1>
