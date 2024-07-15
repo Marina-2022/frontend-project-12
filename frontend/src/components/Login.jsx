@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable */
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import axios from 'axios';
@@ -6,13 +7,27 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Header from './Header';
 import { setToken, setUserName } from '../slices/authSlice';
+import TokenContext from '../context/AuthContext.js';
 
 const Login = () => {
+  const [err, setError] = useState(null);
+
+  const { saveToken, saveUsername } = useContext(TokenContext);
+
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
   const addToken = (token) => dispatch(setToken(token));
   const addUserName = (userName) => dispatch(setUserName(userName));
+
+  const loginRef = useRef(null);
+
+  useEffect(() => {
+    if (err) {
+      loginRef.current.focus();
+      loginRef.current.select();
+    }
+  }, [err]);
 
   const formik = useFormik({
     initialValues: {
@@ -24,17 +39,20 @@ const Login = () => {
         console.log(values);
         const { data } = await axios.post('/api/v1/login', values);
         if (data.token) {
-          // localStorage.setItem('token', data.token);
-          // localStorage.setItem('username', data.username);
+          saveToken(data.token);
+          saveUsername(data.username);
+
           addToken(data.token);
           addUserName(data.username);
           navigate('/');
         } else {
-          console.error('Error');
+          setError(true);
+          // console.error('Error', data);
         }
-        // console.log('data', data);
+        console.log('data', data);
       } catch (error) {
-        console.error('Error:', error);
+        setError(true);
+        console.error('Ошибка при запросе', error);
       }
     },
   });
@@ -65,13 +83,14 @@ const Login = () => {
                     <Form.Control
                       type="username"
                       name="username"
+                      className={`form-control ${err ? 'is-invalid' : ''}`}
                       onChange={formik.handleChange}
                       value={formik.values.username}
                       autoComplete="username"
                       required
                       placeholder="Ваш ник"
                       id="username"
-                      className="form-control"
+                      ref={loginRef}
                       autoFocus
                     />
                     <Form.Label htmlFor="username">
@@ -82,20 +101,26 @@ const Login = () => {
                     <Form.Control
                       type="password"
                       name="password"
+                      className={`form-control ${err ? 'is-invalid' : ''}`}
                       onChange={formik.handleChange}
                       value={formik.values.password}
                       autoComplete="current-password"
                       required=""
                       placeholder="Пароль"
                       id="password"
-                      className="form-control"
                     />
                     <Form.Label
-                      className="form-label"
                       htmlFor="password"
                     >
                       Пароль
                     </Form.Label>
+                    {err && (
+                      <Form.Control.Feedback
+                        className="invalid-tooltip"
+                        >
+                          Неверные имя пользователя или пароль
+                        </Form.Control.Feedback>
+                    )}
                   </Form.Group>
                   <button
                     type="submit"
