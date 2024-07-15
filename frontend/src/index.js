@@ -3,16 +3,19 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import { Provider } from 'react-redux';
 import App from './App';
-import store from './slices/store';
+import store from './store/index.js';
+import TokenProvider from './context/TokenProvider.jsx';
 
 // import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('chat'));
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <TokenProvider>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </TokenProvider>
   </React.StrictMode>,
 );
 
