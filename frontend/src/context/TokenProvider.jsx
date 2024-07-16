@@ -1,7 +1,7 @@
 import React, {
   useState, useEffect, useMemo, useCallback,
 } from 'react';
-import TokenContext from './AuthContext.js';
+import TokenContext from './AuthContext.jsx';
 
 const TokenProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('token') === null ? '' : localStorage.getItem('token'));
