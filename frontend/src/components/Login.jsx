@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Header from './Header';
 import { setToken, setUserName } from '../slices/authSlice';
-import TokenContext from '../context/AuthContext.js';
+import TokenContext from '../context/AuthContext.jsx';
 
 const Login = () => {
   const [err, setError] = useState(null);
