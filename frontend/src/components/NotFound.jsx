@@ -1,10 +1,10 @@
 import React from 'react';
 import imageNotFound from '../images/errorPage.png';
-import Header from './Header';
+// import Header from './Header';
 
 const NotFound = () => (
-  <div>
-    <Header />
+  <>
+    {/* <Header /> */}
     <div className="text-center">
       <img
         className="img-fluid w-50"
@@ -18,7 +18,7 @@ const NotFound = () => (
         <a href="/">на главную страницу</a>
       </p>
     </div>
-  </div>
+  </>
 );
 
 export default NotFound;
