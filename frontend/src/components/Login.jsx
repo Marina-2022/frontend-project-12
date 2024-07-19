@@ -1,18 +1,20 @@
-/* eslint-disable */
-import React, { useContext, useEffect, useRef, useState } from 'react';
+// /* eslint-disable */
+import React, { useEffect, useRef, useState } from 'react';
 import { Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import Header from './Header';
+// import Header from './Header';
 import { setToken, setUserName } from '../slices/authSlice';
-import TokenContext from '../context/AuthContext.jsx';
+// import TokenContext from '../context/AuthContext.jsx';
+import useAuth from '../hooks/useAuth.js';
 
 const Login = () => {
+  const auth = useAuth();
   const [err, setError] = useState(null);
 
-  const { saveToken, saveUsername } = useContext(TokenContext);
+  // const { saveToken, saveUsername } = useContext(TokenContext);
 
   const navigate = useNavigate();
 
@@ -36,11 +38,13 @@ const Login = () => {
     },
     onSubmit: async (values) => {
       try {
-        console.log(values);
+        // console.log(values);
         const { data } = await axios.post('/api/v1/login', values);
         if (data.token) {
-          saveToken(data.token);
-          saveUsername(data.username);
+          // localStorage.setItem('token', data.token);
+          auth.setToken(data.token);
+          auth.setUsername(data.username);
+          auth.logIn();
 
           addToken(data.token);
           addUserName(data.username);
@@ -58,12 +62,12 @@ const Login = () => {
   });
 
   return (
-    <div>
-      <Header />
+    <>
+      {/* <Header /> */}
       <div className="container-fluid h-100">
         <div className="row justify-content-center align-content-center h-100">
-          <div className="col-12 col-md-8 col-xxl-6">
-            <div className="card shadow-sm">
+          <div className="col-12 col-md-8 col-xxl-6 ">
+            <div className="card shadow-sm ">
               <div className="card-body row p-5">
                 <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
                   <img
@@ -117,9 +121,9 @@ const Login = () => {
                     {err && (
                       <Form.Control.Feedback
                         className="invalid-tooltip"
-                        >
-                          Неверные имя пользователя или пароль
-                        </Form.Control.Feedback>
+                      >
+                        Неверные имя пользователя или пароль
+                      </Form.Control.Feedback>
                     )}
                   </Form.Group>
                   <button
@@ -143,7 +147,7 @@ const Login = () => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
