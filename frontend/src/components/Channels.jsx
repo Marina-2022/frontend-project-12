@@ -1,9 +1,14 @@
-import React from 'react';
+/* eslint-disable max-len */
+/* eslint-disable */
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
-import { useGetChannelsQuery } from '../api/channelsApi';
+import { io } from 'socket.io-client';
+import channelsApi, { useGetChannelsQuery } from '../api/channelsApi';
 import { setCurrentChannel } from '../slices/currentChannelSlice';
+import { setModalChannel } from '../slices/modalSlice';
+import ModalContainer from './modals/index.js';
 
 const Channels = () => {
   const { t } = useTranslation();
@@ -12,15 +17,35 @@ const Channels = () => {
   const { currentChannel } = useSelector((state) => state.currentChannel);
   // console.log('currentChannel', currentChannel);
 
+  const channels = useSelector((state) => channelsApi.endpoints.getChannels.select()(state)?.data);
+  console.log('channels', channels);
+
   const {
     data: channelsData,
     error: channelsError,
     isLoading: isLoadingChannels,
   } = useGetChannelsQuery();
 
+   const handleModalShow = (modal, channel = { id: '', name: '' }) => {
+    dispatch(setModalChannel({ id: channel.id, name: channel.name, modal }));
+   }
+
   const handleOnChannelClick = (channelId) => {
     dispatch(setCurrentChannel(channelId));
   };
+
+  useEffect(() => {
+    const socket = io();
+    const handleNewChannel = (channel) => {
+      dispatch(channelsApi.util.updateQueryData('getChannels', undefined, (draft) => {
+        draft.push(channel);
+      }));
+    };
+    socket.on('newChannel', handleNewChannel);
+    return () => {
+      socket.off('newChannel', handleNewChannel);
+    }
+  }, [dispatch]);
 
   // console.log('isLoadingChannels', isLoadingChannels);
   // console.log('channelsError', channelsError);
@@ -40,21 +65,10 @@ const Channels = () => {
         <b>{t('chat.channels')}</b>
         <button
           type="button"
-          className="p-0 text-primary btn btn-group-vertical"
+          className="btn btn-outline-primary btn-sm"
+          onClick={() =>handleModalShow('adding')}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 16 16"
-            width="20"
-            height="20"
-            fill="currentColor"
-          >
-            <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z" />
-            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-          </svg>
-          <span className="visually-hidden">
-            {t('chat.plus')}
-          </span>
+          {t('chat.plus')}
         </button>
       </div>
       <ul
@@ -68,9 +82,9 @@ const Channels = () => {
                 type="button"
                 className={classNames(
                   'w-100 rounded-0 text-start text-truncate btn',
-                  { 'btn-secondary': channel.id === currentChannel },
+                  { 'btn-secondary': channel.id === currentChannel.id },
                 )}
-                onClick={() => handleOnChannelClick(channel.id)}
+                onClick={() => handleOnChannelClick(channel)}
               >
                 <span className="me-1">#</span>
                 {channel.name}
@@ -79,6 +93,7 @@ const Channels = () => {
           </li>
         ))}
       </ul>
+      <ModalContainer />
     </div>
   );
 };
