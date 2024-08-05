@@ -1,10 +1,11 @@
 /* eslint-disable max-len */
-/* eslint-disable */
+// /* eslint-disable */
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { io } from 'socket.io-client';
+import { Dropdown, ButtonGroup } from 'react-bootstrap';
+import classNames from 'classnames';
 import channelsApi, { useGetChannelsQuery } from '../api/channelsApi';
 import { setCurrentChannel } from '../slices/currentChannelSlice';
 import { setModalChannel } from '../slices/modalSlice';
@@ -15,10 +16,6 @@ const Channels = () => {
   const dispatch = useDispatch();
 
   const { currentChannel } = useSelector((state) => state.currentChannel);
-  // console.log('currentChannel', currentChannel);
-
-  const channels = useSelector((state) => channelsApi.endpoints.getChannels.select()(state)?.data);
-  console.log('channels', channels);
 
   const {
     data: channelsData,
@@ -26,9 +23,11 @@ const Channels = () => {
     isLoading: isLoadingChannels,
   } = useGetChannelsQuery();
 
-   const handleModalShow = (modal, channel = { id: '', name: '' }) => {
+  const handleModalShow = (modal, channel = { id: '', name: '' }) => {
     dispatch(setModalChannel({ id: channel.id, name: channel.name, modal }));
-   }
+    // console.log('id', channel.id);
+    // console.log('name', channel.name);
+  };
 
   const handleOnChannelClick = (channelId) => {
     dispatch(setCurrentChannel(channelId));
@@ -41,15 +40,28 @@ const Channels = () => {
         draft.push(channel);
       }));
     };
-    socket.on('newChannel', handleNewChannel);
-    return () => {
-      socket.off('newChannel', handleNewChannel);
-    }
-  }, [dispatch]);
 
-  // console.log('isLoadingChannels', isLoadingChannels);
-  // console.log('channelsError', channelsError);
-  // console.log('channelsData', channelsData);
+    const handleRemoveChannel = ({ id }) => {
+      // console.log('Removing channel with id:', id);
+      dispatch(channelsApi.util.updateQueryData('getChannels', undefined, (draft) => draft.filter((currentChannels) => currentChannels.id !== id)));
+    };
+
+    const handleRenameChannel = ({ id, name }) => {
+      dispatch(channelsApi.util.updateQueryData('getChannels', undefined, (draft) => {
+        const updatedChannels = draft.map((channel) => (channel.id === id ? { ...channel, name } : channel));
+        Object.assign(draft, updatedChannels);
+      }));
+    };
+
+    socket.on('newChannel', handleNewChannel);
+    socket.on('removeChannel', handleRemoveChannel);
+    socket.on('renameChannel', handleRenameChannel);
+    return () => {
+      socket.off('newChannel');
+      socket.off('removeChannel');
+      socket.off('renameChannel');
+    };
+  }, [dispatch]);
 
   if (isLoadingChannels) {
     return <div>Loading...</div>;
@@ -66,7 +78,7 @@ const Channels = () => {
         <button
           type="button"
           className="btn btn-outline-primary btn-sm"
-          onClick={() =>handleModalShow('adding')}
+          onClick={() => handleModalShow('adding')}
         >
           {t('chat.plus')}
         </button>
@@ -89,6 +101,28 @@ const Channels = () => {
                 <span className="me-1">#</span>
                 {channel.name}
               </button>
+              {channel.removable && (
+                <Dropdown as={ButtonGroup}>
+                  <Dropdown.Toggle
+                    split
+                    variant={channel.id === currentChannel.id ? 'secondary' : 'light'}
+                  >
+                    <span className="visually-hidden">{t('channelActions')}</span>
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <Dropdown.Item
+                      onClick={() => handleModalShow('removing', channel)}
+                    >
+                      {t('chat.remove')}
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      onClick={() => handleModalShow('renaming', channel)}
+                    >
+                      {t('chat.rename')}
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              )}
             </div>
           </li>
         ))}
