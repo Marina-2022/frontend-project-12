@@ -21,7 +21,7 @@ const channelsApi = createApi({
       }),
     }),
 
-    editChannel: builder.mutation({
+    renameChannel: builder.mutation({
       query: (channel) => ({
         url: `/channels/${channel.id}`,
         method: 'PATCH',
@@ -43,6 +43,6 @@ export default channelsApi;
 export const {
   useGetChannelsQuery,
   useAddChannelMutation,
-  useEditChannelMutation,
+  useRenameChannelMutation,
   useRemoveChannelMutation,
 } = channelsApi;
