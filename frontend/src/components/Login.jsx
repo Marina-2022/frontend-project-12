@@ -19,10 +19,7 @@ const Login = () => {
   // const { saveToken, saveUsername } = useContext(TokenContext);
 
   const navigate = useNavigate();
-
   const dispatch = useDispatch();
-  const addToken = (token) => dispatch(setToken(token));
-  const addUserName = (userName) => dispatch(setUserName(userName));
 
   const loginRef = useRef(null);
 
@@ -43,19 +40,18 @@ const Login = () => {
         // console.log(values);
         const { data } = await axios.post('/api/v1/login', values);
         if (data.token) {
-          // localStorage.setItem('token', data.token);
           auth.setToken(data.token);
           auth.setUsername(data.username);
           auth.logIn();
 
-          addToken(data.token);
-          addUserName(data.username);
+          dispatch(setToken(data.token));
+          dispatch(setUserName(data.username));
           navigate('/');
         } else {
           setError(true);
           // console.error('Error', data);
         }
-        console.log('data', data);
+        // console.log('data', data);
       } catch (error) {
         setError(true);
         console.error('Ошибка при запросе', error);
