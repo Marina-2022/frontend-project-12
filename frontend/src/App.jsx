@@ -10,6 +10,10 @@ import {
   Navigate,
 } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
+import {
+  Provider as ProviderRollbar,
+  ErrorBoundary,
+} from '@rollbar/react';
 import AuthContext from './context/AuthContext.jsx';
 import Login from './components/Login';
 import NotFound from './components/NotFound';
@@ -17,6 +21,13 @@ import Chat from './components/Chat';
 import Signup from './components/Signup';
 import useAuth from './hooks/useAuth.js';
 import Header from './components/Header.jsx';
+
+const rollbarConfig = {
+  accessToken: process.env.REACT_APP_TOKEN_ACCESS,
+  captureUncaught: true,
+  captureUnhandledRejections: true,
+  invironment: 'production',
+};
 
 const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('token') || '');
@@ -62,18 +73,22 @@ const PrivateRoute = ({ children }) => {
 
 const App = () => (
   <div className="d-flex flex-column h-100">
-    <AuthProvider>
-      <BrowserRouter>
-        <Header />
-        <Routes>
-          <Route path="/" element={<PrivateRoute><Chat /></PrivateRoute>} />
-          <Route path="/login" element={<Login />} />
-          <Route path="*" element={<NotFound />} />
-          <Route path="/signup" element={<Signup />} />
-        </Routes>
-        <ToastContainer />
-      </BrowserRouter>
-    </AuthProvider>
+    <ProviderRollbar config={rollbarConfig}>
+      <ErrorBoundary>
+        <AuthProvider>
+          <BrowserRouter>
+            <Header />
+            <Routes>
+              <Route path="/" element={<PrivateRoute><Chat /></PrivateRoute>} />
+              <Route path="/login" element={<Login />} />
+              <Route path="*" element={<NotFound />} />
+              <Route path="/signup" element={<Signup />} />
+            </Routes>
+            <ToastContainer />
+          </BrowserRouter>
+        </AuthProvider>
+      </ErrorBoundary>
+    </ProviderRollbar>
   </div>
 );
 
