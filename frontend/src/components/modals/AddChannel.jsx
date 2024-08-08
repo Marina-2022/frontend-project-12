@@ -43,10 +43,11 @@ const AddChannel = (props) => {
         // console.log('response', response);
         // const { id, name, removable } = response;
         dispatch(setCurrentChannel(response));
-        toast.success(t('channelCreated'));
+        toast.success(t('toasts.channelCreated'));
         handleClose();
       } catch (error) {
         console.error(error);
+        toast.error(t('toasts.errorNetwork'));
       }
     },
   });
