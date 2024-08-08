@@ -5,12 +5,18 @@ const translation = {
       exit: 'Выйти',
     },
     login: {
-      enter: 'Вход',
       username: 'Ваш ник',
       password: 'Пароль',
       login: 'Войти',
       notHaveAccount: 'Нет аккаунта?',
       registration: 'Регистрация',
+    },
+    signup: {
+      registration: 'Регистрация',
+      username: 'Имя пользователя',
+      password: 'Пароль',
+      confirmPassword: 'Подтвердите пароль',
+      submit: 'Зарегистрироваться',
     },
     chat: {
       channels: 'Каналы',
@@ -32,15 +38,26 @@ const translation = {
       rename: 'Переименовать',
       renameChannel: 'Переименовать канал',
     },
+    notFound: {
+      pageNotFound: 'Страница не найдена',
+      youCanGo: 'Но вы можете перейти',
+      toTheHomepage: 'на главную страницу',
+    },
     errors: {
       wrongLogin: 'Неверные имя пользователя или пароль',
       required: 'Обязательное поле',
       minMax: 'От 3 до 20 символов',
       uniqueName: 'Должно быть уникальным',
+      minSymbols: 'Не менее 6 символов',
+      passwordsMatch: 'Пароли должны совпадать',
+      networkError: 'Ошибка соединения',
+      userExists: 'Такой пользователь уже существует',
     },
     toasts: {
       channelCreated: 'Канал создан',
       channelDeleted: 'Канал удалён',
+      channelRenamed: 'Канал переименован',
+      errorNetwork: 'Ошибка соединения',
     },
   },
 };
