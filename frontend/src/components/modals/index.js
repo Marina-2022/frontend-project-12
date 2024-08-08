@@ -18,8 +18,10 @@ const ModalContainer = () => {
 
   const { t } = useTranslation();
 
-  const modalChannelId = useSelector((state) => state.modalChannel.id);
-  const modalChannelName = useSelector((state) => state.modalChannel.name);
+  const modalChannelId = useSelector((state) => state.modalChannel.modalChannel.id);
+  const modalChannelName = useSelector((state) => state.modalChannel.modalChannel.name);
+  // console.log('modalChannelName', modalChannelName);
+  // console.log('modalChannelId', modalChannelId);
 
   const handleClose = () => {
     dispatch(setModalChannel({ id: '', name: '', modal: '' }));
@@ -30,13 +32,13 @@ const ModalContainer = () => {
   const channels = useSelector((state) => channelsApi.endpoints.getChannels.select()(state)?.data);
   const getValidatedChannelName = Yup.object().shape({
     name: Yup.string()
-      .required(t('channelNameIsRequired'))
-      .min(3, t('channelNameIsTooShort'))
-      .max(20, t('channelNameIsTooLong'))
-      .matches(/\S/, t('error.requiredField'))
+      .required(t('errors.required'))
+      .min(3, t('errors.minMax'))
+      .max(20, t('errors.minMax'))
+      .matches(/\S/, t('errors.required'))
       .notOneOf(
         channels.map((channel) => channel.name),
-        t('error.uniqueName'),
+        t('errors.uniqueName'),
       ),
   });
 
