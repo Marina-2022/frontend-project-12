@@ -77,7 +77,7 @@ const Login = () => {
                 onSubmit={formik.handleSubmit}
               >
                 <h1 className="text-center mb-4">
-                  {t('login.enter')}
+                  {t('login.login')}
                 </h1>
                 <Form.Group className="form-group form-floating mb-3">
                   <Form.Control
