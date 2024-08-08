@@ -14,9 +14,14 @@ const modallSlice = createSlice({
   initialState,
   reducers: {
     setModalChannel(state, action) {
+      // console.log('Previous state:', JSON.stringify(state, null, 2));
+      // console.log('Action payload:', action.payload);
+
       state.modalChannel.name = action.payload.name;
       state.modalChannel.id = action.payload.id;
       state.showModal = action.payload.modal;
+
+      // console.log('New state modal:', JSON.stringify(state, null, 2));
     },
   },
 });
