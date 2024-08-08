@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import { io } from 'socket.io-client';
+import filter from 'leo-profanity';
 // import useAuth from '../hooks/useAuth';
 import messagesApi, { useGetMessagesQuery } from '../api/messagesApi';
 import Channels from './Channels';
@@ -52,7 +53,7 @@ const Chat = () => {
                 <b>
                   #
                   {' '}
-                  {currentChannel.name}
+                  {filter.clean(currentChannel.name)}
                 </b>
               </p>
               <span className="text-muted">
@@ -64,7 +65,7 @@ const Chat = () => {
                 <div className="text-break mb-2" key={message.id}>
                   <b>{message.username}</b>
                   {': '}
-                  {message.message}
+                  {filter.clean(message.message)}
                 </div>
               ))}
             </div>
