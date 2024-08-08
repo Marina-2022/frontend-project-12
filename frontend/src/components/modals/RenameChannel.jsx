@@ -34,21 +34,26 @@ const RenameChannel = (props) => {
   }, []);
 
   const handleRenameChannel = async (values) => {
-    // console.log('Renaming channel with values:', values);
     try {
       // console.log('values', values);
-      const { name, id } = values;
+      const { name, channelId } = values;
+      // console.log('name', name);
+      // console.log('id', channelId);
+
       const data = {
+        id: channelId,
         name,
-        id,
         removable: true,
       };
+      // console.log('data', data);
       const response = await renameChannel(data).unwrap();
+      // console.log('response', response);
       handleClose();
       dispatch(setCurrentChannel(response));
-      toast.success(t('channelRenamed'));
+      toast.success(t('toasts.channelRenamed'));
     } catch (error) {
       console.error(error);
+      toast.error(t('toasts.errorNetwork'));
     }
   };
   // useEffect(() => {
