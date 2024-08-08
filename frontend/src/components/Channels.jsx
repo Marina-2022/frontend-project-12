@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { io } from 'socket.io-client';
 import { Dropdown, ButtonGroup } from 'react-bootstrap';
+import filter from 'leo-profanity';
 import classNames from 'classnames';
 import channelsApi, { useGetChannelsQuery } from '../api/channelsApi';
 import { setCurrentChannel } from '../slices/currentChannelSlice';
@@ -16,6 +17,7 @@ const Channels = () => {
   const dispatch = useDispatch();
 
   const { currentChannel } = useSelector((state) => state.currentChannel);
+  // console.log('currentChannel channels', currentChannel);
 
   const {
     data: channelsData,
@@ -99,7 +101,7 @@ const Channels = () => {
                 onClick={() => handleOnChannelClick(channel)}
               >
                 <span className="me-1">#</span>
-                {channel.name}
+                {filter.clean(channel.name)}
               </button>
               {channel.removable && (
                 <Dropdown as={ButtonGroup}>
@@ -107,7 +109,7 @@ const Channels = () => {
                     split
                     variant={channel.id === currentChannel.id ? 'secondary' : 'light'}
                   >
-                    <span className="visually-hidden">{t('channelActions')}</span>
+                    <span className="visually-hidden">{t('chat.channelActions')}</span>
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
                     <Dropdown.Item
