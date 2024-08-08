@@ -9,10 +9,12 @@ import {
   Routes,
   Navigate,
 } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 import AuthContext from './context/AuthContext.jsx';
 import Login from './components/Login';
 import NotFound from './components/NotFound';
 import Chat from './components/Chat';
+import Signup from './components/Signup';
 import useAuth from './hooks/useAuth.js';
 import Header from './components/Header.jsx';
 
@@ -67,7 +69,9 @@ const App = () => (
           <Route path="/" element={<PrivateRoute><Chat /></PrivateRoute>} />
           <Route path="/login" element={<Login />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/signup" element={<Signup />} />
         </Routes>
+        <ToastContainer />
       </BrowserRouter>
     </AuthProvider>
   </div>
