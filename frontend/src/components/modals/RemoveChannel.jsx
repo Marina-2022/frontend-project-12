@@ -12,7 +12,8 @@ const RemoveChannel = (props) => {
   const dispatch = useDispatch();
   const [removeChannel] = useRemoveChannelMutation();
 
-  const currentChannelId = useSelector((state) => state.currentChannel.id);
+  const currentChannelId = useSelector((state) => state.currentChannel.currentChannel.id);
+  // console.log('currentChannelId remove', currentChannelId);
 
   const defaultChannel = { id: '1', name: 'general', removable: false };
 
@@ -23,9 +24,10 @@ const RemoveChannel = (props) => {
       if (id === currentChannelId) {
         dispatch(setCurrentChannel(defaultChannel));
       }
-      toast.success(t('toast.channelDeleted'));
+      toast.success(t('toasts.channelDeleted'));
     } catch (error) {
       console.error(error);
+      toast.error(t('toasts.errorNetwork'));
     }
   };
 
