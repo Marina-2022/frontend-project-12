@@ -29,11 +29,6 @@ const rollbarConfig = {
   invironment: 'production',
 };
 
-function TestError() {
-  const a = null;
-  return a.hello();
-}
-
 const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('token') || '');
   const [userName, setUsername] = useState(localStorage.getItem('username') || '');
@@ -80,7 +75,6 @@ const App = () => (
   <div className="d-flex flex-column h-100">
     <ProviderRollbar config={rollbarConfig}>
       <ErrorBoundary>
-        <TestError />
         <AuthProvider>
           <BrowserRouter>
             <Header />
