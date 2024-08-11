@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { useFormik } from 'formik';
+import { useRollbar } from '@rollbar/react';
 import { useAddChannelMutation } from '../../api/channelsApi';
 import { setCurrentChannel } from '../../slices/currentChannelSlice';
 // import { setModalChannel } from '../../slices/modalSlice';
@@ -14,6 +15,7 @@ const AddChannel = (props) => {
   const { showModal, handleClose, getValidatedChannelName } = props;
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const rollbar = useRollbar();
   const [addChannel] = useAddChannelMutation();
 
   //   const currentChannelId = useSelector((state) => state.currentChannel.id);
@@ -48,6 +50,9 @@ const AddChannel = (props) => {
       } catch (error) {
         console.error(error);
         toast.error(t('toasts.errorNetwork'));
+        if (error.response.status > 399 && error.response.status < 500) {
+          rollbar.error('AddChannel error', error);
+        }
       }
     },
   });
