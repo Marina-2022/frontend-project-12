@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
@@ -10,6 +10,13 @@ const Message = () => {
   const username = useSelector((state) => state.auth.userName);
   const [addMessage] = useAddMessageMutation();
   const { currentChannel } = useSelector((state) => state.currentChannel);
+
+  const refInput = useRef(null);
+  useEffect(() => {
+    if (refInput.current) {
+      refInput.current.focus();
+    }
+  }, []);
 
   const handleSubmitMessage = async (values, { setSubmitting, resetForm }) => {
     try {
@@ -48,6 +55,7 @@ const Message = () => {
             aria-label={t('chat.newMessage')}
             placeholder={t('chat.placeholder')}
             className="border-0 p-0 ps-2 form-control"
+            ref={refInput}
             value={formik.values.message}
             onChange={formik.handleChange}
             disabled={formik.isSubmitting}
