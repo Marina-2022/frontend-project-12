@@ -37,6 +37,7 @@ const translation = {
       remove: 'Удалить',
       rename: 'Переименовать',
       renameChannel: 'Переименовать канал',
+      loading: 'Загрузка...',
     },
     notFound: {
       pageNotFound: 'Страница не найдена',
