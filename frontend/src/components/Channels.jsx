@@ -7,14 +7,19 @@ import { io } from 'socket.io-client';
 import { Dropdown, ButtonGroup } from 'react-bootstrap';
 import filter from 'leo-profanity';
 import classNames from 'classnames';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 import channelsApi, { useGetChannelsQuery } from '../api/channelsApi';
 import { setCurrentChannel } from '../slices/currentChannelSlice';
 import { setModalChannel } from '../slices/modalSlice';
 import ModalContainer from './modals/index.js';
+import useAuth from '../hooks/useAuth.js';
 
 const Channels = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const { lodOut } = useAuth();
+  const navigate = useNavigate();
 
   const { currentChannel } = useSelector((state) => state.currentChannel);
   // console.log('currentChannel channels', currentChannel);
@@ -36,7 +41,20 @@ const Channels = () => {
   };
 
   useEffect(() => {
+    if (channelsError) {
+      if (channelsError.status === 401) {
+        lodOut();
+        navigate('/login');
+      } else {
+        console.error(channelsError);
+        toast.error(t('toasts.errorNetwork'));
+      }
+    }
+  }, [channelsError, navigate, lodOut, t]);
+
+  useEffect(() => {
     const socket = io();
+
     const handleNewChannel = (channel) => {
       dispatch(channelsApi.util.updateQueryData('getChannels', undefined, (draft) => {
         draft.push(channel);
@@ -66,11 +84,7 @@ const Channels = () => {
   }, [dispatch]);
 
   if (isLoadingChannels) {
-    return <div>Loading...</div>;
-  }
-
-  if (channelsError) {
-    return <div>Error loading channels</div>;
+    return <div>{t('chat.loading')}</div>;
   }
 
   return (
