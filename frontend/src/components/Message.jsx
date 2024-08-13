@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
@@ -10,13 +10,17 @@ const Message = () => {
   const username = useSelector((state) => state.auth.userName);
   const [addMessage] = useAddMessageMutation();
   const { currentChannel } = useSelector((state) => state.currentChannel);
+  const [messageSent, setMessageSent] = useState(false);
 
   const refInput = useRef(null);
+
   useEffect(() => {
     if (refInput.current) {
       refInput.current.focus();
+      // console.log('Focus', messageSent);
     }
-  }, []);
+  }, [currentChannel, messageSent]);
+  // console.log('messageSent', messageSent);
 
   const handleSubmitMessage = async (values, { setSubmitting, resetForm }) => {
     try {
@@ -26,12 +30,16 @@ const Message = () => {
         channelId: currentChannel.id,
         username,
       };
+      // console.log('Sending message:', data);
       await addMessage(data);
       resetForm();
+      setMessageSent(true);
+      // console.log('Message sent');
     } catch (error) {
       console.error(error);
     } finally {
       setSubmitting(false);
+      setMessageSent(false);
     }
   };
 
