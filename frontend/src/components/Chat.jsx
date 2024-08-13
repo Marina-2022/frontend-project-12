@@ -25,6 +25,16 @@ const Chat = () => {
   const messegeRef = useRef();
   // console.log('messagesFilter', messagesFilter);
 
+  const endRefMessages = useRef(null);
+
+  const scrollToBottom = () => {
+    endRefMessages.current.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messagesFilter]);
+
   useEffect(() => {
     const socket = io();
     const handleMessage = (newMassage) => {
@@ -68,6 +78,7 @@ const Chat = () => {
                   {filter.clean(message.message)}
                 </div>
               ))}
+              <div ref={endRefMessages} />
             </div>
             <Message />
           </div>
