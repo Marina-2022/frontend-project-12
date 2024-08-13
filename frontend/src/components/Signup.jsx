@@ -63,7 +63,7 @@ const Signup = () => {
           username: values.username,
           password: values.password,
         });
-        console.log('response', response.data.token);
+        // console.log('response', response.data.token);
 
         if (response.data.token) {
           console.log('Setting token:', response.data.token);
@@ -72,7 +72,7 @@ const Signup = () => {
           auth.setUsername(response.data.username);
           auth.logIn();
 
-          console.log('Setting username:', response.data.username);
+          // console.log('Setting username:', response.data.username);
           dispatch(setToken(response.data.token));
           dispatch(setUserName(response.data.username));
 
