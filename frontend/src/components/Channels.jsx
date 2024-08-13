@@ -8,18 +8,18 @@ import { Dropdown, ButtonGroup } from 'react-bootstrap';
 import filter from 'leo-profanity';
 import classNames from 'classnames';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import channelsApi, { useGetChannelsQuery } from '../api/channelsApi';
 import { setCurrentChannel } from '../slices/currentChannelSlice';
 import { setModalChannel } from '../slices/modalSlice';
 import ModalContainer from './modals/index.js';
-import useAuth from '../hooks/useAuth.js';
+// import useAuth from '../hooks/useAuth.js';
 
 const Channels = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { logOut } = useAuth();
-  const navigate = useNavigate();
+  // const { logOut } = useAuth();
+  // const navigate = useNavigate();
 
   const { currentChannel } = useSelector((state) => state.currentChannel);
   // console.log('currentChannel channels', currentChannel);
@@ -42,15 +42,15 @@ const Channels = () => {
 
   useEffect(() => {
     if (channelsError) {
-      if (channelsError.status === 401) {
-        logOut();
-        navigate('/login');
-      } else {
-        console.error(channelsError);
-        toast.error(t('toasts.errorNetwork'));
-      }
+      // if (channelsError.status === 401) {
+      //   logOut();
+      //   navigate('/login');
+      // } else {
+      console.error(channelsError);
+      toast.error(t('toasts.errorNetwork'));
+      // }
     }
-  }, [channelsError, navigate, logOut, t]);
+  }, [channelsError, t]);
 
   useEffect(() => {
     const socket = io();
