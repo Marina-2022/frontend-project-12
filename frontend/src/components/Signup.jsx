@@ -20,9 +20,9 @@ const Signup = () => {
   const auth = useAuth();
   const [err, setError] = useState(false);
 
-  useEffect(() => {
-    console.log('Auth state changed:', auth);
-  }, [auth]);
+  // useEffect(() => {
+  //   console.log('Auth state changed:', auth);
+  // }, [auth]);
 
   const refInput = useRef(null);
 
@@ -66,38 +66,30 @@ const Signup = () => {
         // console.log('response', response.data.token);
 
         if (response.data.token) {
-          console.log('Setting token:', response.data.token);
-
           auth.setToken(response.data.token);
           auth.setUsername(response.data.username);
           auth.logIn();
 
-          // console.log('Setting username:', response.data.username);
           dispatch(setToken(response.data.token));
           dispatch(setUserName(response.data.username));
 
-          console.log('Navigating to home page');
+          // console.log('Setting username:', response.data.username);
+          // console.log('Setting token:', response.data.token);
+          // console.log('Navigating to home page');
           navigate('/');
         }
       } catch (error) {
         console.error(t('errors.networkError'));
-        setError(true); // Устанавливаем, что ошибка произошла
+        setError(true);
         if (error.response) {
           if (error.response.status === 409) {
-            setError('userExists'); // Устанавливаем специфичную ошибку, если имя пользователя уже существует
+            setError('userExists');
           } else {
-            setError(true); // Устанавливаем общее состояние ошибки, если это не 409
+            setError(true);
           }
         } else {
-          // Обработка случая, когда нет свойства response (например, ошибка сети)
           setError(true);
         }
-        // if (error.response.status === 409) {
-        //   setError('username');
-        // }
-        // if (error.response.status > 399 && error.response.status < 500) {
-        //   rollbar.error('Singup error', error);
-        // }
       }
     },
   });
