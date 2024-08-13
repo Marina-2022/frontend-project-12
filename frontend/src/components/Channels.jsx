@@ -18,7 +18,7 @@ import useAuth from '../hooks/useAuth.js';
 const Channels = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { lodOut } = useAuth();
+  const { logOut } = useAuth();
   const navigate = useNavigate();
 
   const { currentChannel } = useSelector((state) => state.currentChannel);
@@ -43,14 +43,14 @@ const Channels = () => {
   useEffect(() => {
     if (channelsError) {
       if (channelsError.status === 401) {
-        lodOut();
+        logOut();
         navigate('/login');
       } else {
         console.error(channelsError);
         toast.error(t('toasts.errorNetwork'));
       }
     }
-  }, [channelsError, navigate, lodOut, t]);
+  }, [channelsError, navigate, logOut, t]);
 
   useEffect(() => {
     const socket = io();
