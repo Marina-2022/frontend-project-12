@@ -1,9 +1,9 @@
 const prepareHeaders = (headers) => {
   const token = localStorage.getItem('token');
-  // console.log('Token from localStorage:', token);
+  console.log('Token from localStorage:', token);
   if (token) {
     headers.set('Authorization', `Bearer ${token}`);
-    // console.log('Headers with token:', headers);
+    console.log('Headers with token:', headers);
   }
   return headers;
 };
