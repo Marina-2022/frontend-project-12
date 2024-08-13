@@ -7,7 +7,7 @@
 
 Hexlet Chat is a simple version of Slack
 
-<code>[click here to see](https://frontend-project-12-1-17sp.onrender.com/)</code>
+<code>[click here to see](https://frontend-project-12-3bey.onrender.com)</code>
 
 You can use test account: username: admin, password: admin
 
