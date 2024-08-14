@@ -15,7 +15,7 @@ import {
   Provider as ProviderRollbar,
   ErrorBoundary,
 } from '@rollbar/react';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 // import AuthContext from './context/AuthContext.jsx';
 import Login from './components/Login';
 import NotFound from './components/NotFound';
@@ -23,7 +23,8 @@ import Chat from './components/Chat';
 import Signup from './components/Signup';
 // import useAuth from './hooks/useAuth.js';
 import Header from './components/Header.jsx';
-import { selectLoggedIn } from './slices/authSlice';
+// import { selectLoggedIn } from './slices/authSlice';
+import useAuth from './hooks/useAuth.js';
 
 const rollbarConfig = {
   accessToken: process.env.REACT_APP_TOKEN_ACCESS,
@@ -33,7 +34,9 @@ const rollbarConfig = {
 };
 
 const PrivateRoute = ({ children }) => {
-  const loggedIn = useSelector(selectLoggedIn);
+  const { loggedIn } = useAuth();
+  // const loggedIn = useSelector(selectLoggedIn);
+  console.log('loggedIn', loggedIn);
 
   return loggedIn ? children : <Navigate to="/login" />;
 };
