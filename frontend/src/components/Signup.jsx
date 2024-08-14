@@ -17,7 +17,8 @@ const Signup = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const auth = useAuth();
+  const { logIn } = useAuth();
+
   const [err, setError] = useState(false);
 
   // useEffect(() => {
@@ -59,16 +60,17 @@ const Signup = () => {
     validationSchema: getValidatedSchema,
     onSubmit: async (values) => {
       try {
-        const response = await axios.post('/api/v1/signup', {
+        const data = {
           username: values.username,
           password: values.password,
-        });
+        };
+        const response = await axios.post('/api/v1/signup', data);
         // console.log('response', response.data.token);
 
         if (response.data.token) {
-          auth.setToken(response.data.token);
-          auth.setUsername(response.data.username);
-          auth.logIn();
+          setToken(response.data.token);
+          setUserName(response.data.username);
+          logIn(response.data.token, response.data.username);
 
           dispatch(setToken(response.data.token));
           dispatch(setUserName(response.data.username));
