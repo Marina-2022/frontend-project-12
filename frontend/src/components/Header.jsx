@@ -4,11 +4,14 @@ import {
 } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+// import { useDispatch, useSelector } from 'react-redux';
+// import { logout, selectToken } from '../slices/authSlice';
 import useAuth from '../hooks/useAuth';
 
 const Header = () => {
   const { t } = useTranslation();
-  const auth = useAuth();
+  // const auth = useAuth();
+  const { loggedIn, logOut } = useAuth();
 
   // console.log('localStorage', localStorage.getItem('token'));
 
@@ -23,8 +26,8 @@ const Header = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
-            {auth.token ? (
-              <Button variant="primary" onClick={auth.logOut}>
+            {loggedIn ? (
+              <Button variant="primary" onClick={logOut}>
                 {t('header.exit')}
               </Button>
             ) : (
