@@ -8,15 +8,13 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { setToken, setUserName } from '../slices/authSlice';
 // import TokenContext from '../context/AuthContext.jsx';
-import useAuth from '../hooks/useAuth.js';
+import useAuth from '../hooks/useAuth';
 
 const Login = () => {
-  const auth = useAuth();
+  const { logIn } = useAuth();
   const [err, setError] = useState(null);
 
   const { t } = useTranslation();
-
-  // const { saveToken, saveUsername } = useContext(TokenContext);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -40,9 +38,11 @@ const Login = () => {
         // console.log(values);
         const { data } = await axios.post('/api/v1/login', values);
         if (data.token) {
-          auth.setToken(data.token);
-          auth.setUsername(data.username);
-          auth.logIn();
+          // console.log(data.token);
+          // console.log(data.username);
+          setToken(data.token);
+          setUserName(data.username);
+          logIn(data.token, data.username);
 
           dispatch(setToken(data.token));
           dispatch(setUserName(data.username));
