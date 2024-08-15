@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { setToken, setUserName } from '../slices/authSlice';
 // import TokenContext from '../context/AuthContext.jsx';
 import useAuth from '../hooks/useAuth';
@@ -28,36 +29,71 @@ const Login = () => {
     }
   }, [err]);
 
+  const handleSubmit = async (values, { setSubmitting }) => {
+    try {
+      // console.log(values);
+      const { data } = await axios.post('/api/v1/login', values);
+      if (data.token) {
+        // console.log(data.token);
+        // console.log(data.username);
+        setToken(data.token);
+        setUserName(data.username);
+        logIn(data.token, data.username);
+
+        dispatch(setToken(data.token));
+        dispatch(setUserName(data.username));
+        navigate('/');
+      } else {
+        setError(true);
+        // console.error('Error', data);
+      }
+      // console.log('data', data);
+    } catch (error) {
+      if (error.response.status === 401) {
+        setError(true);
+      } else {
+        console.error(error);
+        toast.error(t('errors.networkError'));
+      }
+      setSubmitting(false);
+    }
+  };
+
   const formik = useFormik({
     initialValues: {
       username: '',
       password: '',
     },
-    onSubmit: async (values) => {
-      try {
-        // console.log(values);
-        const { data } = await axios.post('/api/v1/login', values);
-        if (data.token) {
-          // console.log(data.token);
-          // console.log(data.username);
-          setToken(data.token);
-          setUserName(data.username);
-          logIn(data.token, data.username);
-
-          dispatch(setToken(data.token));
-          dispatch(setUserName(data.username));
-          navigate('/');
-        } else {
-          setError(true);
-          // console.error('Error', data);
-        }
-        // console.log('data', data);
-      } catch (error) {
-        setError(true);
-        console.error('Ошибка при запросе', error);
-      }
-    },
+    onSubmit: handleSubmit,
   });
+    // async (values) => {
+  // try {
+  //   // console.log(values);
+  //   const { data } = await axios.post('/api/v1/login', values);
+  //   if (data.token) {
+  //     // console.log(data.token);
+  //     // console.log(data.username);
+  //     setToken(data.token);
+  //     setUserName(data.username);
+  //     logIn(data.token, data.username);
+
+  //     dispatch(setToken(data.token));
+  //     dispatch(setUserName(data.username));
+  //     navigate('/');
+  //   } else {
+  //     setError(true);
+  //     // console.error('Error', data);
+  //   }
+  //   // console.log('data', data);
+  // } catch (error) {
+  //   if (error.response.status === 401) {
+  //     setError(true);
+  //   } else {
+  //     console.error(error);
+  //     toast.error(t('errors.networkError'));
+  //   }
+  //   setSubmitting(false);
+  // }
 
   return (
     <div className="container-fluid h-100">
