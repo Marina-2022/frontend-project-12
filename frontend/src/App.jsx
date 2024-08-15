@@ -16,7 +16,6 @@ import {
   ErrorBoundary,
 } from '@rollbar/react';
 // import { useSelector } from 'react-redux';
-// import AuthContext from './context/AuthContext.jsx';
 import Login from './components/Login';
 import NotFound from './components/NotFound';
 import Chat from './components/Chat';
@@ -35,6 +34,10 @@ const rollbarConfig = {
 
 const PrivateRoute = ({ children }) => {
   const { loggedIn } = useAuth();
+
+  if (loggedIn === undefined) {
+    return <div>Loading...</div>;
+  }
   // const loggedIn = useSelector(selectLoggedIn);
   console.log('loggedIn', loggedIn);
 
