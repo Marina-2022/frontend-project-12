@@ -1,13 +1,13 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
-  setToken, setUserName, logout, selectLoggedIn,
+  setToken, setUserName, logout,
 } from '../slices/authSlice';
 
 const useAuth = () => {
   const dispatch = useDispatch();
   // const token = useSelector(selectToken);
   // const userName = useSelector(selectUserName);
-  const loggedIn = useSelector(selectLoggedIn);
+  // const loggedIn = useSelector(selectLoggedIn);
 
   const logIn = (tokenUser, username) => {
     localStorage.setItem('token', tokenUser);
@@ -23,7 +23,7 @@ const useAuth = () => {
   };
 
   return {
-    loggedIn, logIn, logOut,
+    logIn, logOut,
   };
 };
 
