@@ -49,7 +49,8 @@ const Login = () => {
       }
       // console.log('data', data);
     } catch (error) {
-      if (error.response.status === 401) {
+      console.log('Error login', error.response);
+      if (error.response && error.response.status === 401) {
         setError(true);
       } else {
         console.error(error);

@@ -36,6 +36,7 @@ const PrivateRoute = ({ children }) => {
   // const { loggedIn } = useAuth();
 
   if (!token) {
+    console.log('!token in if private', token);
     return <Navigate to="/login" />;
   }
 

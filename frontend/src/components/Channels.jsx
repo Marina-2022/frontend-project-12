@@ -22,18 +22,16 @@ const Channels = () => {
   const navigate = useNavigate();
 
   const { currentChannel } = useSelector((state) => state.currentChannel);
-  // console.log('currentChannel channels', currentChannel);
 
   const {
     data: channelsData,
     error: channelsError,
     isLoading: isLoadingChannels,
   } = useGetChannelsQuery();
+  console.log('channelsError', channelsError);
 
   const handleModalShow = (modal, channel = { id: '', name: '' }) => {
     dispatch(setModalChannel({ id: channel.id, name: channel.name, modal }));
-    // console.log('id', channel.id);
-    // console.log('name', channel.name);
   };
 
   const handleOnChannelClick = (channelId) => {
@@ -42,6 +40,7 @@ const Channels = () => {
 
   useEffect(() => {
     if (channelsError) {
+      console.log('channelsError.status', channelsError.status);
       if (channelsError.status === 401) {
         logOut();
         navigate('/login');

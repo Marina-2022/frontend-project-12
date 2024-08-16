@@ -11,7 +11,6 @@ const Message = () => {
   const username = useSelector((state) => state.auth.userName);
   const [addMessage] = useAddMessageMutation();
   const { currentChannel } = useSelector((state) => state.currentChannel);
-  // const [messageSent, setMessageSent] = useState(false);
 
   const refInput = useRef(null);
 
@@ -23,16 +22,13 @@ const Message = () => {
         channelId: currentChannel.id,
         username,
       };
-      // console.log('Sending message:', data);
       await addMessage(data);
       resetForm();
-      // setMessageSent(true);
-      // console.log('Message sent');
     } catch (error) {
+      console.log('Error sending message:', error.response.status);
       console.error(error);
     } finally {
       setSubmitting(false);
-      // setMessageSent(false);
     }
   };
 
@@ -46,10 +42,8 @@ const Message = () => {
   useEffect(() => {
     if (refInput.current) {
       refInput.current.focus();
-      // console.log('focus', messageSent);
     }
   }, [formik.isSubmitting, currentChannel]);
-  // console.log('messageSent', messageSent);
 
   return (
     <div className="mt-auto px-5 py-3">
