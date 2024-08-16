@@ -40,8 +40,14 @@ const Channels = () => {
 
   useEffect(() => {
     if (channelsError) {
-      console.log('channelsError.status', channelsError.status);
-      if (channelsError.status === 401) {
+      console.log('channelsError.status', channelsError);
+
+      const { status, data } = channelsError;
+
+      console.log('channelsError.status', status);
+      console.log('channelsError.data', data);
+
+      if (status === 401) {
         logOut();
         navigate('/login');
       } else {
