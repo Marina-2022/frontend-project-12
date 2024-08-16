@@ -77,7 +77,7 @@ const AddChannel = (props) => {
               ref={refInput}
               disabled={formik.isSubmitting}
             />
-            <Form.Label visuallyHidden>{t('channelName')}</Form.Label>
+            <Form.Label visuallyHidden>{t('chat.nameChannel')}</Form.Label>
             <Form.Control.Feedback type="invalid">
               {formik.errors.name}
             </Form.Control.Feedback>
