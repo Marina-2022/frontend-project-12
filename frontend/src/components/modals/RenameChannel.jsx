@@ -20,13 +20,7 @@ const RenameChannel = (props) => {
 
   const dispatch = useDispatch();
 
-  // const currentChannelId = useSelector((state) => state.currentChannel.currentChannel.id);
-  // console.log('currentChannelId', currentChannelId);
-  // const currentChannelName = useSelector((state) => state.currentChannel.currentChannel.name);
-  // console.log('currentChannelName', currentChannelName);
-
   const [renameChannel] = useRenameChannelMutation();
-  // console.log('modalChannelName', modalChannelName);
 
   const refInput = useRef(null);
   useEffect(() => {
@@ -37,19 +31,15 @@ const RenameChannel = (props) => {
 
   const handleRenameChannel = async (values) => {
     try {
-      // console.log('values', values);
       const { name, channelId } = values;
-      // console.log('name', name);
-      // console.log('id', channelId);
 
       const data = {
         id: channelId,
         name,
         removable: true,
       };
-      // console.log('data', data);
+
       const response = await renameChannel(data).unwrap();
-      // console.log('response', response);
       handleClose();
       dispatch(setCurrentChannel(response));
       toast.success(t('toasts.channelRenamed'));
@@ -58,10 +48,6 @@ const RenameChannel = (props) => {
       toast.error(t('toasts.errorNetwork'));
     }
   };
-  // useEffect(() => {
-  //   console.log('Modal Channel Name:', modalChannelName);
-  //   console.log('Modal Channel ID:', modalChannelId);
-  // }, [modalChannelName, modalChannelId]);
 
   const formik = useFormik({
     initialValues: {
@@ -72,14 +58,6 @@ const RenameChannel = (props) => {
     onSubmit: handleRenameChannel,
     enableReinitialize: true,
   });
-
-  // useEffect(() => {
-  //   if (showModal === 'renaming') {
-  //     formik.setFieldValue('name', modalChannelName);
-  //     formik.setFieldValue('channelId', modalChannelId);
-  //     refInput.current.focus();
-  //   }
-  // }, []);
 
   return (
     <Modal show={showModal === 'renaming'} onHide={handleClose}>
