@@ -5,17 +5,12 @@ import {
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { logout, selectToken } from '../slices/authSlice';
 import useAuth from '../hooks/useAuth';
 
 const Header = () => {
   const { t } = useTranslation();
-  // const auth = useAuth();
   const { token } = useSelector((state) => state.auth);
   const { logOut } = useAuth();
-
-  // console.log('localStorage', localStorage.getItem('token'));
 
   return (
     <Navbar expand="lg" bg="white" variant="light" className="shadow-sm">
