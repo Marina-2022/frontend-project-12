@@ -28,7 +28,6 @@ const PrivateRoute = ({ children }) => {
   const { token } = useSelector((state) => state.auth);
 
   if (!token) {
-    console.log('!token in if private', token);
     return <Navigate to="/login" />;
   }
 
