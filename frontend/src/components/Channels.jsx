@@ -57,10 +57,6 @@ const Channels = () => {
       dispatch(channelsApi.util.updateQueryData('getChannels', undefined, (draft) => {
         draft.push(channel);
       }));
-
-      // if (channelsEndRef.current) {
-      //   channelsEndRef.current.scrollIntoView({ behavior: 'smooth' });
-      // }
     };
 
     const handleRemoveChannel = ({ id }) => {
