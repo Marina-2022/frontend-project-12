@@ -1,5 +1,4 @@
 /* eslint-disable max-len */
-// /* eslint-disable */
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -28,7 +27,6 @@ const Channels = () => {
     error: channelsError,
     isLoading: isLoadingChannels,
   } = useGetChannelsQuery();
-  // console.log('channelsError', channelsError);
 
   const handleModalShow = (modal, channel = { id: '', name: '' }) => {
     dispatch(setModalChannel({ id: channel.id, name: channel.name, modal }));
@@ -40,13 +38,7 @@ const Channels = () => {
 
   useEffect(() => {
     if (channelsError) {
-      console.log('channelsError.status', channelsError);
-
-      const { status, data } = channelsError;
-
-      console.log('channelsError.status', status);
-      console.log('channelsError.data', data);
-
+      const { status } = channelsError;
       if (status === 401) {
         logOut();
         navigate('/login');
@@ -67,7 +59,6 @@ const Channels = () => {
     };
 
     const handleRemoveChannel = ({ id }) => {
-      // console.log('Removing channel with id:', id);
       dispatch(channelsApi.util.updateQueryData('getChannels', undefined, (draft) => draft.filter((currentChannels) => currentChannels.id !== id)));
     };
 
