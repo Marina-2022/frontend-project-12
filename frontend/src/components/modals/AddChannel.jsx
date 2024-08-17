@@ -9,7 +9,6 @@ import { useFormik } from 'formik';
 import { useRollbar } from '@rollbar/react';
 import { useAddChannelMutation } from '../../api/channelsApi';
 import { setCurrentChannel } from '../../slices/currentChannelSlice';
-// import { setModalChannel } from '../../slices/modalSlice';
 
 const AddChannel = (props) => {
   const { showModal, handleClose, getValidatedChannelName } = props;
@@ -17,9 +16,6 @@ const AddChannel = (props) => {
   const dispatch = useDispatch();
   const rollbar = useRollbar();
   const [addChannel] = useAddChannelMutation();
-
-  //   const currentChannelId = useSelector((state) => state.currentChannel.id);
-  //   const modalChannelId = useSelector((state) => state.modalChannel.id);
 
   const refInput = useRef(null);
   useEffect(() => {
@@ -40,10 +36,8 @@ const AddChannel = (props) => {
           removable: true,
         };
 
-        // console.log('data Add', data);
         const response = await addChannel(data).unwrap();
-        // console.log('response', response);
-        // const { id, name, removable } = response;
+
         dispatch(setCurrentChannel(response));
         toast.success(t('toasts.channelCreated'));
         handleClose();
