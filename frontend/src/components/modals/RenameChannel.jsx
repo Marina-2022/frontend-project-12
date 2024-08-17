@@ -20,8 +20,10 @@ const RenameChannel = (props) => {
 
   const dispatch = useDispatch();
 
-  // const currentChannelId = useSelector((state) => state.currentChannel.id);
-  // const currentChannelName = useSelector((state) => state.currentChannel.name);
+  // const currentChannelId = useSelector((state) => state.currentChannel.currentChannel.id);
+  // console.log('currentChannelId', currentChannelId);
+  // const currentChannelName = useSelector((state) => state.currentChannel.currentChannel.name);
+  // console.log('currentChannelName', currentChannelName);
 
   const [renameChannel] = useRenameChannelMutation();
   // console.log('modalChannelName', modalChannelName);
@@ -109,7 +111,7 @@ const RenameChannel = (props) => {
               <button
                 type="submit"
                 className="btn btn-primary"
-                onClick={formik.submitForm}
+                disabled={formik.isSubmitting}
               >
                 {t('chat.send')}
               </button>
