@@ -1,7 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import imageNotFound from '../images/errorPage.png';
-// import Header from './Header';
 
 const NotFound = () => {
   const { t } = useTranslation();
@@ -12,6 +11,9 @@ const NotFound = () => {
         className="img-fluid w-50"
         src={imageNotFound}
         alt={t('notFound.pageNotFound')}
+        style={{
+          marginTop: '40px',
+        }}
       />
       <h1 className="h4 text-muted">{t('notFound.pageNotFound')}</h1>
       <p className="text-muted">
