@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Form } from 'react-bootstrap';
-// import { useRollbar } from '@rollbar/react';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import axios from 'axios';
@@ -13,17 +12,12 @@ import imageSingup from '../images/signup.jpg';
 
 const Signup = () => {
   const { t } = useTranslation();
-  //   const rollbar = useRollbar();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { logIn } = useAuth();
 
   const [err, setError] = useState(false);
-
-  // useEffect(() => {
-  //   console.log('Auth state changed:', auth);
-  // }, [auth]);
 
   const refInput = useRef(null);
 
@@ -65,7 +59,6 @@ const Signup = () => {
           password: values.password,
         };
         const response = await axios.post('/api/v1/signup', data);
-        // console.log('response', response.data.token);
 
         if (response.data.token) {
           setToken(response.data.token);
@@ -75,9 +68,6 @@ const Signup = () => {
           dispatch(setToken(response.data.token));
           dispatch(setUserName(response.data.username));
 
-          // console.log('Setting username:', response.data.username);
-          // console.log('Setting token:', response.data.token);
-          // console.log('Navigating to home page');
           navigate('/');
         }
       } catch (error) {
