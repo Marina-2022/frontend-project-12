@@ -13,7 +13,6 @@ const RemoveChannel = (props) => {
   const [removeChannel] = useRemoveChannelMutation();
 
   const currentChannelId = useSelector((state) => state.currentChannel.currentChannel.id);
-  // console.log('currentChannelId remove', currentChannelId);
 
   const defaultChannel = { id: '1', name: 'general', removable: false };
 
