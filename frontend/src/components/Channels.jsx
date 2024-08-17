@@ -28,7 +28,7 @@ const Channels = () => {
     error: channelsError,
     isLoading: isLoadingChannels,
   } = useGetChannelsQuery();
-  console.log('channelsError', channelsError);
+  // console.log('channelsError', channelsError);
 
   const handleModalShow = (modal, channel = { id: '', name: '' }) => {
     dispatch(setModalChannel({ id: channel.id, name: channel.name, modal }));
