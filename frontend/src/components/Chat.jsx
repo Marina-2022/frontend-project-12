@@ -1,14 +1,11 @@
-// /* eslint-disable */
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import { io } from 'socket.io-client';
 import filter from 'leo-profanity';
-// import useAuth from '../hooks/useAuth';
 import messagesApi, { useGetMessagesQuery } from '../api/messagesApi';
 import Channels from './Channels';
 import Message from './Message';
-// import { setCurrentChannel } from '../slices/currentChannelSlice';
 
 const Chat = () => {
   const { t } = useTranslation();
@@ -16,14 +13,11 @@ const Chat = () => {
 
   const {
     data: messagesData = [],
-    // error: messagesError,
-    // isLoading: isLoadingMessages,
   } = useGetMessagesQuery();
 
   const { currentChannel } = useSelector((state) => state.currentChannel);
   const messagesFilter = messagesData.filter((message) => message.channelId === currentChannel.id);
   const messegeRef = useRef();
-  // console.log('messagesFilter', messagesFilter);
 
   const endRefMessages = useRef(null);
 
@@ -47,10 +41,6 @@ const Chat = () => {
       socket.off('newMessage');
     };
   }, [dispatch]);
-
-  // console.log('currentChannel', currentChannel.name);
-  // const state = useSelector((state) => state);
-  // console.log('Redux State:', state);
 
   return (
     <div className="container h-100 my-4 overflow-hidden rounded shadow">
