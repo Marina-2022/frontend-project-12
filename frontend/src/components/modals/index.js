@@ -20,14 +20,11 @@ const ModalContainer = () => {
 
   const modalChannelId = useSelector((state) => state.modalChannel.modalChannel.id);
   const modalChannelName = useSelector((state) => state.modalChannel.modalChannel.name);
-  // console.log('modalChannelName', modalChannelName);
-  // console.log('modalChannelId', modalChannelId);
 
   const handleClose = () => {
     dispatch(setModalChannel({ id: '', name: '', modal: '' }));
   };
   const showModal = useSelector((state) => state.modalChannel.showModal);
-  // console.log('showModal', showModal);
 
   const channels = useSelector((state) => channelsApi.endpoints.getChannels.select()(state)?.data);
   const getValidatedChannelName = Yup.object().shape({
