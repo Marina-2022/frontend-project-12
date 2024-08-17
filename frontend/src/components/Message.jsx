@@ -25,7 +25,7 @@ const Message = () => {
       await addMessage(data);
       resetForm();
     } catch (error) {
-      console.log('Error sending message:', error.response.status);
+      // console.log('Error sending message:', error.response.status);
       console.error(error);
     } finally {
       setSubmitting(false);
