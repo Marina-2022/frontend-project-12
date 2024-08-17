@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from 'react';
-// import React from 'react';
 import { useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
@@ -25,7 +24,6 @@ const Message = () => {
       await addMessage(data);
       resetForm();
     } catch (error) {
-      // console.log('Error sending message:', error.response.status);
       console.error(error);
     } finally {
       setSubmitting(false);
