@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { io } from 'socket.io-client';
@@ -19,6 +19,7 @@ const Channels = () => {
   const dispatch = useDispatch();
   const { logOut } = useAuth();
   const navigate = useNavigate();
+  const channelsEndRef = useRef(null);
 
   const { currentChannel } = useSelector((state) => state.currentChannel);
 
@@ -56,6 +57,10 @@ const Channels = () => {
       dispatch(channelsApi.util.updateQueryData('getChannels', undefined, (draft) => {
         draft.push(channel);
       }));
+
+      // if (channelsEndRef.current) {
+      //   channelsEndRef.current.scrollIntoView({ behavior: 'smooth' });
+      // }
     };
 
     const handleRemoveChannel = ({ id }) => {
@@ -78,6 +83,12 @@ const Channels = () => {
       socket.off('renameChannel');
     };
   }, [dispatch]);
+
+  useEffect(() => {
+    if (channelsEndRef.current) {
+      channelsEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [channelsData]);
 
   if (isLoadingChannels) {
     return <div>{t('chat.loading')}</div>;
@@ -138,6 +149,7 @@ const Channels = () => {
             </div>
           </li>
         ))}
+        <div ref={channelsEndRef} />
       </ul>
       <ModalContainer />
     </div>
