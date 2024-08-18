@@ -1,6 +1,8 @@
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/Marina-2022/frontend-project-12/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/Marina-2022/frontend-project-12/actions)
 
+[![Maintainability](https://api.codeclimate.com/v1/badges/fd2bbf871b6ddcdc95e8/maintainability)](https://codeclimate.com/github/Marina-2022/frontend-project-12/maintainability)
+
 ## Hexlet Chat
 
 ### Description
