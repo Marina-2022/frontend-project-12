@@ -2,18 +2,13 @@ import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import { io } from 'socket.io-client';
-// import filter from 'leo-profanity';
 import messagesApi, { useGetMessagesQuery } from '../api/messagesApi';
 import Channels from './Channels';
 import Message from './Message';
-// import customBadWords from '../locales/customBadWords';
 
 const Chat = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-
-  // console.log('customBadWords', customBadWords);
-  // console.log('list', filter.list());
 
   const {
     data: messagesData = [],
