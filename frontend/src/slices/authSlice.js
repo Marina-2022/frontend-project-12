@@ -14,19 +14,11 @@ const authSlice = createSlice({
       state.token = action.payload;
       localStorage.setItem('token', action.payload);
     },
-    // setToken: (state, action) => ({
-    //   ...state,
-    //   token: action.payload,
-    // }),
 
     setUserName: (state, action) => {
       state.userName = action.payload;
       localStorage.setItem('username', action.payload);
     },
-    // setUserName: (state, action) => ({
-    //   ...state,
-    //   userName: action.payload,
-    // }),
 
     logout: (state) => {
       state.token = null;
@@ -34,11 +26,6 @@ const authSlice = createSlice({
       localStorage.removeItem('token');
       localStorage.removeItem('username');
     },
-    // logout: (state) => ({
-    //   ...state,
-    //   token: null,
-    //   userName: '',
-    // }),
   },
 });
 
