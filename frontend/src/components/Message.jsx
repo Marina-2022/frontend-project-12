@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
+import filter from 'leo-profanity';
 import { useAddMessageMutation } from '../api/messagesApi';
 
 const Message = () => {
@@ -16,8 +17,9 @@ const Message = () => {
   const handleSubmitMessage = async (values, { setSubmitting, resetForm }) => {
     try {
       const { message } = values;
+      const cleanMessage = filter.clean(message);
       const data = {
-        message,
+        message: cleanMessage,
         channelId: currentChannel.id,
         username,
       };
