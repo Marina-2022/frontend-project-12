@@ -8,7 +8,8 @@ import { useFormik } from 'formik';
 import axios from 'axios';
 import useAuth from '../hooks/useAuth';
 import { setToken, setUserName } from '../slices/authSlice';
-import imageSingup from '../images/signup.jpg';
+import imageSingup from '../assets/images/signup.jpg';
+import { pagePaths, apiPaths } from '../routes.js';
 
 const Signup = () => {
   const { t } = useTranslation();
@@ -58,7 +59,7 @@ const Signup = () => {
           username: values.username,
           password: values.password,
         };
-        const response = await axios.post('/api/v1/signup', data);
+        const response = await axios.post(apiPaths.signupPath(), data);
 
         if (response.data.token) {
           setToken(response.data.token);
@@ -68,7 +69,7 @@ const Signup = () => {
           dispatch(setToken(response.data.token));
           dispatch(setUserName(response.data.username));
 
-          navigate('/');
+          navigate(pagePaths.home);
         }
       } catch (error) {
         console.error(t('errors.networkError'));
