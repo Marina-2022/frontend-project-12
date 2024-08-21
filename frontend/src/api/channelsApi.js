@@ -16,7 +16,6 @@ const channelsApi = createApi({
 
     addChannel: builder.mutation({
       query: (channel) => ({
-        // url: '/channels',
         method: 'POST',
         body: channel,
       }),
