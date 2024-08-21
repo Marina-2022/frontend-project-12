@@ -1,5 +1,7 @@
-const prepareHeaders = (headers) => {
-  const token = localStorage.getItem('token');
+const prepareHeaders = (headers, { getState }) => {
+  const state = getState();
+  const { token } = state.auth;
+  console.log('token', token);
   if (token) {
     headers.set('Authorization', `Bearer ${token}`);
   }
