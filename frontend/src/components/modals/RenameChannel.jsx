@@ -5,6 +5,7 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import { toast } from 'react-toastify';
 import { useFormik } from 'formik';
+import filter from 'leo-profanity';
 import { useRenameChannelMutation } from '../../api/channelsApi';
 import { setCurrentChannel } from '../../slices/currentChannelSlice';
 
@@ -33,9 +34,11 @@ const RenameChannel = (props) => {
     try {
       const { name, channelId } = values;
 
+      const cleanName = filter.clean(name);
+
       const data = {
         id: channelId,
-        name,
+        name: cleanName,
         removable: true,
       };
 
