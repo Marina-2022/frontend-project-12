@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { io } from 'socket.io-client';
 import { Dropdown, ButtonGroup } from 'react-bootstrap';
-import filter from 'leo-profanity';
 import classNames from 'classnames';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
@@ -13,6 +12,7 @@ import { setCurrentChannel } from '../slices/currentChannelSlice';
 import { setModalChannel } from '../slices/modalSlice';
 import ModalContainer from './modals/index.js';
 import useAuth from '../hooks/useAuth.js';
+import { pagePaths } from '../routes.js';
 
 const Channels = () => {
   const { t } = useTranslation();
@@ -42,7 +42,7 @@ const Channels = () => {
       const { status } = channelsError;
       if (status === 401) {
         logOut();
-        navigate('/login');
+        navigate(pagePaths.login);
       } else {
         console.error(channelsError);
         toast.error(t('toasts.errorNetwork'));
@@ -86,11 +86,9 @@ const Channels = () => {
     }
   }, [channelsData]);
 
-  if (isLoadingChannels) {
-    return <div>{t('chat.loading')}</div>;
-  }
-
-  return (
+  return isLoadingChannels ? (
+    <div>{t('chat.loading')}</div>
+  ) : (
     <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
       <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
         <b>{t('chat.channels')}</b>
@@ -118,29 +116,29 @@ const Channels = () => {
                 onClick={() => handleOnChannelClick(channel)}
               >
                 <span className="me-1">#</span>
-                {filter.clean(channel.name)}
+                {channel.name}
               </button>
               {channel.removable && (
-                <Dropdown as={ButtonGroup}>
-                  <Dropdown.Toggle
-                    split
-                    variant={channel.id === currentChannel.id ? 'secondary' : 'light'}
+              <Dropdown as={ButtonGroup}>
+                <Dropdown.Toggle
+                  split
+                  variant={channel.id === currentChannel.id ? 'secondary' : 'light'}
+                >
+                  <span className="visually-hidden">{t('chat.channelActions')}</span>
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item
+                    onClick={() => handleModalShow('removing', channel)}
                   >
-                    <span className="visually-hidden">{t('chat.channelActions')}</span>
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    <Dropdown.Item
-                      onClick={() => handleModalShow('removing', channel)}
-                    >
-                      {t('chat.remove')}
-                    </Dropdown.Item>
-                    <Dropdown.Item
-                      onClick={() => handleModalShow('renaming', channel)}
-                    >
-                      {t('chat.rename')}
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
+                    {t('chat.remove')}
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    onClick={() => handleModalShow('renaming', channel)}
+                  >
+                    {t('chat.rename')}
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
               )}
             </div>
           </li>
