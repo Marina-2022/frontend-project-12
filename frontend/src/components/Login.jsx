@@ -8,7 +8,8 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { setToken, setUserName } from '../slices/authSlice';
 import useAuth from '../hooks/useAuth';
-import login from '../images/login.jpeg';
+import login from '../assets/images/login.jpeg';
+import { pagePaths, apiPaths } from '../routes.js';
 
 const Login = () => {
   const { logIn } = useAuth();
@@ -29,7 +30,7 @@ const Login = () => {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      const { data } = await axios.post('/api/v1/login', values);
+      const { data } = await axios.post(apiPaths.loginPath(), values);
       if (data.token) {
         setToken(data.token);
         setUserName(data.username);
@@ -37,7 +38,7 @@ const Login = () => {
 
         dispatch(setToken(data.token));
         dispatch(setUserName(data.username));
-        navigate('/');
+        navigate(pagePaths.home);
       } else {
         setError(true);
       }
@@ -137,7 +138,7 @@ const Login = () => {
                   {t('login.notHaveAccount')}
                   {' '}
                 </span>
-                <a href="/signup">{t('login.registration')}</a>
+                <a href={pagePaths.signup}>{t('login.registration')}</a>
               </div>
             </div>
           </div>
