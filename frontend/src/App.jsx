@@ -16,6 +16,7 @@ import NotFound from './components/NotFound';
 import Chat from './components/Chat';
 import Signup from './components/Signup';
 import Header from './components/Header.jsx';
+import { pagePaths } from './routes.js';
 
 const rollbarConfig = {
   accessToken: process.env.REACT_APP_TOKEN_ACCESS,
@@ -41,10 +42,10 @@ const App = () => (
         <BrowserRouter>
           <Header />
           <Routes>
-            <Route path="/" element={<PrivateRoute><Chat /></PrivateRoute>} />
-            <Route path="/login" element={<Login />} />
-            <Route path="*" element={<NotFound />} />
-            <Route path="/signup" element={<Signup />} />
+            <Route path={pagePaths.home} element={<PrivateRoute><Chat /></PrivateRoute>} />
+            <Route path={pagePaths.login} element={<Login />} />
+            <Route path={pagePaths.notFound} element={<NotFound />} />
+            <Route path={pagePaths.signup} element={<Signup />} />
           </Routes>
           <ToastContainer />
         </BrowserRouter>
