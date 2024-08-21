@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import imageNotFound from '../images/errorPage.png';
+import imageNotFound from '../assets/images/errorPage.png';
 
 const NotFound = () => {
   const { t } = useTranslation();
