@@ -1,21 +1,22 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import prepareHeaders from '../helpers/prepareHeaders.js';
+import { apiPaths } from '../routes.js';
 
 const channelsApi = createApi({
   reducerPath: 'channelsApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: '/api/v1',
+    baseUrl: apiPaths.channelPath(),
     prepareHeaders,
   }),
   tagTypes: ['Channel'],
   endpoints: (builder) => ({
     getChannels: builder.query({
-      query: () => '/channels',
+      query: () => '',
     }),
 
     addChannel: builder.mutation({
       query: (channel) => ({
-        url: '/channels',
+        // url: '/channels',
         method: 'POST',
         body: channel,
       }),
@@ -23,7 +24,7 @@ const channelsApi = createApi({
 
     renameChannel: builder.mutation({
       query: (channel) => ({
-        url: `/channels/${channel.id}`,
+        url: channel.id,
         method: 'PATCH',
         body: channel,
       }),
@@ -31,7 +32,7 @@ const channelsApi = createApi({
 
     removeChannel: builder.mutation({
       query: (id) => ({
-        url: `/channels/${id}`,
+        url: id,
         method: 'DELETE',
       }),
     }),
